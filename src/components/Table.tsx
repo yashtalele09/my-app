@@ -21,10 +21,10 @@ const Table = () => {
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(0);
     const [rows, setRows] = useState(12)
-    const [inputValue, setInputValue] = useState()
+    const [inputValue, setInputValue] = useState<string>("")
     const [SelectRows, setSelectRows] = useState<Artwork[]>([])
     
-    const op = useRef(null)
+    const op = useRef<OverlayPanel | null>(null);
 
     useEffect(()=>{
         getData()
@@ -45,8 +45,8 @@ const Table = () => {
     }
 
     const pageEvent = (event: DataTablePageEvent,) => {
-        setPage(event.page)
-        setRows(event.rows)
+        setPage(event.page || 0)
+        setRows(event.rows || 12)
     }
 
     const selectNumberRows = () => {
@@ -92,7 +92,7 @@ const Table = () => {
         <Button
             icon="pi pi-ellipsis-v"
             className="p-button-text"
-            onClick={(e) => op.current.toggle(e)} 
+            onClick={(e) => op.current?.toggle(e)} 
         ><FaAngleDown /></Button>
         <OverlayPanel ref={op} appendTo={document.body}>
             <input type='number' placeholder='Select Rows' value={inputValue} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>{setInputValue(e.target.value)}} style={{padding:'10px'}}/>
